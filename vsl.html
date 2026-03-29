@@ -345,6 +345,30 @@ src="https://www.facebook.com/tr?id=3988674464538065&ev=PageView&noscript=1"/></
 <script src="https://api.gohealthfix2.com/track.js"></script>
 
 <script>
+  var PIXEL_ID = '3988674464538065';
+  var CAPI_URL  = 'https://api.gohealthfix2.com/capi';
+
+  // Pega fbclid da URL
+  var _p = new URLSearchParams(location.search);
+  var _fbclid = _p.get('fbclid') || '';
+
+  // Envia evento para CAPI (server-side)
+  function capiEvent(eventName, data) {
+    var ocid = window.TR_OCID || localStorage.getItem('tr_ocid') || '';
+    fetch(CAPI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: eventName,
+        pixel_id: PIXEL_ID,
+        fbclid: _fbclid,
+        ocid: ocid,
+        url: location.href,
+        data: data || {}
+      })
+    }).catch(function(){});
+  }
+
   // Hoplinks base por pacote
   var LINKS = {
     2: 'https://e89723xbh1kmdn0ozvojtfjzss.hop.clickbank.net/?cbpage=2bottlessp',
@@ -352,10 +376,11 @@ src="https://www.facebook.com/tr?id=3988674464538065&ev=PageView&noscript=1"/></
     6: 'https://bb9d8x24ociy8tdgyohp3lp60h.hop.clickbank.net/?cbpage=6bottlessp'
   };
 
+  var PRICES = { 2: 158, 3: 207, 6: 294 };
+
   function buildLink(base) {
     var ocid = (window.TR_OCID || localStorage.getItem('tr_ocid') || '').slice(0, 20);
-    var p = new URLSearchParams(location.search);
-    var extclid = p.get('fbclid') || p.get('ttclid') || p.get('gclid') || '';
+    var extclid = _fbclid || _p.get('ttclid') || _p.get('gclid') || '';
     var url = base;
     if (ocid) url += '&tid=' + encodeURIComponent(ocid);
     if (extclid) url += '&extclid=' + encodeURIComponent(extclid);
@@ -368,27 +393,51 @@ src="https://www.facebook.com/tr?id=3988674464538065&ev=PageView&noscript=1"/></
     document.getElementById('btn-6').href = buildLink(LINKS[6]);
   }
 
-  // Atualiza links após track.js registrar o ocid
   setTimeout(updateButtons, 800);
 
-  // Atualiza no clique também
+  // InitiateCheckout no clique + CAPI
   ['btn-2','btn-3','btn-6'].forEach(function(id) {
+    var bottles = parseInt(id.replace('btn-',''));
     document.getElementById(id).addEventListener('click', function() {
-      this.href = buildLink(LINKS[parseInt(id.replace('btn-',''))]);
+      this.href = buildLink(LINKS[bottles]);
+      // Pixel browser
+      if (window.fbq) fbq('track', 'InitiateCheckout', {
+        value: PRICES[bottles],
+        currency: 'USD',
+        num_items: bottles,
+        content_ids: ['powersteel-' + bottles]
+      });
+      // CAPI server-side
+      capiEvent('InitiateCheckout', {
+        value: PRICES[bottles],
+        currency: 'USD',
+        num_items: bottles
+      });
     });
   });
 
-  // Mostra offer section após o VTurb terminar o vídeo
-  // O VTurb dispara o evento "ended" no elemento do player
+  // ViewContent quando offer aparecer
+  function fireViewContent() {
+    if (window.fbq) fbq('track', 'ViewContent', {
+      content_name: 'SteelPower Offer',
+      currency: 'USD',
+      value: 294
+    });
+    capiEvent('ViewContent', { content_name: 'SteelPower Offer', value: 294, currency: 'USD' });
+  }
+
+  // Mostra offer section após o VTurb terminar
   window.addEventListener('message', function(e) {
     if (e.data && (e.data.type === 'videoended' || e.data.event === 'ended')) {
       document.getElementById('offer').classList.add('visible');
+      fireViewContent();
     }
   });
 
-  // Mostra offer após 33min40s (duração do VSL)
+  // Fallback: mostra após 33min40s
   setTimeout(function() {
     document.getElementById('offer').classList.add('visible');
+    fireViewContent();
   }, (33 * 60 + 40) * 1000);
 </script>
 
