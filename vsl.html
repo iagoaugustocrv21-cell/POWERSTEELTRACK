@@ -253,6 +253,7 @@
       <p class="card-title">Starter</p>
       <p class="card-bottles">2 Bottles</p>
       <p class="card-supply">60 Day Supply</p>
+      <img src="2bottlessttp.png" alt="2 Bottles Steel Power">
       <p class="card-price">$79 <span>/ bottle</span></p>
       <p class="card-total">Total = $158</p>
       <p class="card-save">+ Fast Shipping</p>
@@ -270,6 +271,7 @@
       <p class="card-title">Best Value</p>
       <p class="card-bottles">6 Bottles</p>
       <p class="card-supply">180 Day Supply</p>
+      <img src="6bottlesstp.png" alt="6 Bottles Steel Power">
       <p class="card-price">$49 <span>/ bottle</span></p>
       <p class="card-total">Total = $294</p>
       <p class="card-save">SAVE $780 TODAY</p>
@@ -286,6 +288,7 @@
       <p class="card-title">Standard</p>
       <p class="card-bottles">3 Bottles</p>
       <p class="card-supply">90 Day Supply</p>
+      <img src="3bottlesstp.png" alt="3 Bottles Steel Power">
       <p class="card-price">$69 <span>/ bottle</span></p>
       <p class="card-total">Total = $207</p>
       <p class="card-save">SAVE $330 TODAY</p>
@@ -364,10 +367,8 @@
     }
   });
 
-  // Mostra offer após 33min40s (duração do VSL)
-  setTimeout(function() {
-    document.getElementById('offer').classList.add('visible');
-  }, (33 * 60 + 40) * 1000);
+  // Mostra offer imediatamente (teste)
+  document.getElementById('offer').classList.add('visible');
 </script>
 
 </body>
