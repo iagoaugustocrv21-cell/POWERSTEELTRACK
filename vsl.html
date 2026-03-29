@@ -229,17 +229,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <p>⚠️ <strong>WARNING:</strong> This video may be removed at any time. Watch it now before it's gone.</p>
-</div>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Watch This Short Video To Discover<br><span>The Secret Behind SteelPower</span></h1>
-  <p>Turn up your volume and watch until the end — this is important.</p>
-</div>
-
 <!-- VIDEO -->
 <div class="video-wrap">
   <vturb-smartplayer id="vid-69c91cc73c62ed49cd123a92" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer>
@@ -375,11 +364,10 @@
     }
   });
 
-  // Fallback: mostra offer após 30 minutos
-  // (ajusta o tempo conforme a duração real do VSL)
+  // Mostra offer após 33min40s (duração do VSL)
   setTimeout(function() {
     document.getElementById('offer').classList.add('visible');
-  }, 30 * 60 * 1000);
+  }, (33 * 60 + 40) * 1000);
 </script>
 
 </body>
