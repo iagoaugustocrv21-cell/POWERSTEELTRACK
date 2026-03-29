@@ -2,86 +2,511 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Age Verification</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Endurion™ — Choose Your Package</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '3988674464538065');
+fbq('track', 'PageView');
+
+function trackPurchase(value, numItems) {
+  fbq('track', 'Purchase', {
+    value: value,
+    currency: 'USD',
+    num_items: numItems,
+    content_type: 'product',
+    content_ids: ['endurion-' + numItems + 'b']
+  });
+}
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=3988674464538065&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
-    height: 100%;
-    background: #000;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:      #c91212;
+    --red-glow: rgba(201,18,18,.28);
+    --gold:     #c9a227;
+    --gold-lt:  #f5d155;
+    --black:    #0a0a0a;
+    --bg:       #13131a;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Montserrat', sans-serif;
+    color: #111;
+    -webkit-text-size-adjust: 100%;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    text-align: center;
+    padding: 36px 20px 28px;
+    background: linear-gradient(180deg, #0a0a12 0%, #13131a 100%);
+    border-bottom: 2px solid rgba(201,162,39,.25);
+  }
+  .congrats {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.5rem, 5vw, 2.8rem);
+    font-weight: 900;
+    color: var(--gold-lt);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+    text-shadow: 0 0 28px rgba(245,209,85,.35);
+  }
+  .kit-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(.95rem, 3.2vw, 1.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: .02em;
+  }
+
+  .cards-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 14px;
+    padding: 32px 16px 52px;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    border: 2px solid #d8d4cc;
+    flex: 1;
+    max-width: 284px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(0,0,0,.35);
+    transition: transform .2s;
+  }
+  .card:hover { transform: translateY(-3px); }
+
+  .card.hero {
+    border: 3px solid var(--red);
+    max-width: 314px;
+    box-shadow: 0 0 0 3px var(--red-glow), 0 12px 48px rgba(201,18,18,.3);
+    position: relative;
+    z-index: 2;
+  }
+  .card.hero:hover { transform: translateY(-5px); }
+
+  .card-label {
+    text-align: center;
+    padding: 10px 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .88rem;
+    font-weight: 800;
+    font-style: italic;
+  }
+  .card-label.side {
+    background: linear-gradient(135deg, #e8e5df, #f0ede6);
+    color: #666;
+    border-bottom: 1px solid #ddd;
+  }
+  .card-label.best {
+    background: #fff;
+    color: var(--red);
+    font-size: 1.08rem;
+    letter-spacing: .03em;
+    border-bottom: 2px solid #f0ede6;
+  }
+
+  .card-top {
+    padding: 18px 18px 8px;
+    text-align: center;
+    background: linear-gradient(180deg, #fafaf7 0%, #fff 100%);
+  }
+  .hero-top {
+    padding: 18px 18px 8px;
+    text-align: center;
+    background: radial-gradient(ellipse 100% 80% at 50% 20%, #ff4444 0%, #cc1414 28%, #7a0000 58%, #1a0000 82%, #0d0000 100%);
+  }
+
+  .bottles-count {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.55rem, 4.2vw, 2.1rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #111;
+  }
+  .hero-top .bottles-count { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.4); }
+
+  .supply-days {
+    font-family: 'Montserrat', sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #999;
+    margin-bottom: 14px;
+    margin-top: 3px;
+  }
+  .hero-top .supply-days { color: rgba(255,255,255,.5); }
+
+  .product-img {
+    display: block;
+    width: 72%;
+    max-width: 155px;
+    margin: 0 auto 14px;
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,.22));
+    transition: transform .3s;
+  }
+  .card:hover .product-img { transform: scale(1.03); }
+  .img-md { width: 80%; max-width: 185px; }
+  .hero-top .product-img { max-width: 260px; width: 92%; filter: drop-shadow(0 14px 32px rgba(0,0,0,.6)); }
+
+  .price-section      { padding: 12px 18px 6px; text-align: center; background: #fff; }
+  .hero-price-section { padding: 12px 18px 6px; text-align: center; background: #000; }
+
+  .price-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    line-height: 1;
+  }
+  .price-dollar {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.45rem;
+    color: #111;
+    align-self: flex-start;
+    margin-top: 11px;
+  }
+  .price-number {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3.3rem, 9.5vw, 4.8rem);
+    color: #111;
+    line-height: .92;
+  }
+  .price-per {
+    font-family: 'Montserrat', sans-serif;
+    font-size: .66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.3;
+    color: #888;
+    align-self: flex-end;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    text-align: left;
+  }
+  .hero-price-section .price-dollar,
+  .hero-price-section .price-number { color: #fff; }
+  .hero-price-section .price-per    { color: rgba(255,255,255,.45); }
+
+  .checklist-section      { padding: 8px 14px 0; background: #fff; }
+  .hero-checklist-section { padding: 8px 14px 0; background: #000; }
+
+  .check-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Arial, sans-serif;
-  }
-  .container {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .emoji {
-    font-size: 120px;
-    line-height: 1;
-    margin-bottom: 32px;
-    display: block;
-  }
-  h1 {
-    color: #fff;
-    font-size: clamp(28px, 5vw, 48px);
+    gap: 7px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e0ddd6;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .76rem;
     font-weight: 800;
-    margin-bottom: 32px;
-    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #333;
+    text-align: center;
   }
-  .btn-yes {
-    display: inline-block;
-    background: #22c55e;
-    color: #fff;
-    font-size: clamp(22px, 4vw, 36px);
-    font-weight: 700;
-    padding: 16px 64px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  .hero-checklist-section .check-item { border-bottom-color: rgba(255,255,255,.1); color: rgba(255,255,255,.88); }
+  .check-item:first-child { border-top: 1px dashed #e0ddd6; }
+  .hero-checklist-section .check-item:first-child { border-top-color: rgba(255,255,255,.1); }
+  .check-item.savings { color: var(--red); font-size: .8rem; }
+  .hero-checklist-section .check-item.savings { color: var(--gold-lt); }
+
+  .btn-section      { padding: 16px 16px 12px; background: #fff; }
+  .hero-btn-section { padding: 16px 16px 12px; background: #000; }
+
+  .btn-buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 17px 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    font-style: normal;
+    letter-spacing: .08em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: background 0.15s;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: filter .15s, transform .15s, box-shadow .15s;
+    position: relative;
+    overflow: hidden;
   }
-  .btn-yes:hover { background: #16a34a; }
+  .btn-buy::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    transition: left .5s;
+  }
+  .btn-buy:hover::after { left: 150%; }
+
+  .btn-buy.gray-btn {
+    background: linear-gradient(160deg, #34d874 0%, #1db954 50%, #0e8f3c 100%);
+    color: #fff;
+    box-shadow: 0 4px 0 #0a6b2c, 0 6px 18px rgba(26,166,74,.4);
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .btn-buy.gray-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 6px 0 #0a6b2c, 0 10px 24px rgba(26,166,74,.5); }
+
+  .btn-buy.gold-btn {
+    background: linear-gradient(160deg, #34d874 0%, #1db954 50%, #0e8f3c 100%);
+    color: #fff;
+    box-shadow: 0 4px 0 #0a5c22, 0 6px 28px rgba(26,166,74,.5);
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+    animation: glow 2.2s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%,100% { box-shadow: 0 4px 0 #0a5c22, 0 6px 28px rgba(26,166,74,.45); }
+    50%      { box-shadow: 0 4px 0 #0a5c22, 0 12px 40px rgba(26,166,74,.75); }
+  }
+  .btn-buy.gold-btn:hover { transform: translateY(-2px); }
+
+  .pay-section      { padding: 0 14px 10px; background: #fff; text-align: center; }
+  .hero-pay-section { padding: 0 14px 10px; background: #000; text-align: center; }
+  .pay-img { height: 26px; width: auto; max-width: 100%; display: inline-block; border-radius: 4px; }
+
+  .total-section {
+    padding: 8px 16px 20px;
+    text-align: center;
+    background: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    color: #777;
+    line-height: 1.8;
+    margin-top: auto;
+    border-top: 1px solid #f0ede6;
+  }
+  .hero-total-section {
+    padding: 8px 16px 20px;
+    text-align: center;
+    background: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .82rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.42);
+    line-height: 1.8;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  s { opacity: .45; }
+  .bold-price { color: #111; font-weight: 900; font-size: .93rem; }
+  .hero-total-section .bold-price { color: #fff; }
+  .free-ship { color: var(--red); font-weight: 900; }
+  .hero-total-section .free-ship { color: var(--gold-lt); font-weight: 900; }
+
+  .guarantee {
+    background: linear-gradient(135deg, #0a0a12, #13131a);
+    border-top: 1px solid rgba(201,162,39,.2);
+    text-align: center;
+    padding: 18px 20px 26px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: rgba(255,255,255,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .guarantee span { color: var(--gold-lt); }
+
+  @media (max-width: 700px) {
+    .cards-grid { flex-direction: column; align-items: center; padding: 20px 12px 40px; gap: 18px; }
+    .card             { max-width: 100%; width: 100%; }
+    .card.hero        { max-width: 100%; width: 100%; order: 1; }
+    .card.card-3b     { order: 2; }
+    .card.card-2b     { order: 3; }
+    .price-number     { font-size: clamp(3.2rem, 16vw, 4.2rem); }
+    .bottles-count    { font-size: clamp(1.5rem, 7vw, 2rem); }
+    .btn-buy          { font-size: 1rem; padding: 16px 12px; }
+    .guarantee        { font-size: .68rem; gap: 8px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <span class="emoji">😈</span>
-  <h1>Are you over 21 years old?</h1>
-  <a id="yes-btn" class="btn-yes" href="#">Yes</a>
+
+
+<div class="cards-grid">
+
+  <!-- ══════════ 2 BOTTLES ══════════ -->
+  <div class="card card-2b">
+    <div class="card-label side"><em>Basic</em></div>
+    <div class="card-top">
+      <div class="bottles-count">2 Bottles</div>
+      <div class="supply-days">60 Days Supply</div>
+      <img class="product-img"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/ENDURION/ec5f0c680af131bfe372faf83e306a87ea5dbfb5/Endurion%202.png"
+        alt="Endurion 2 Bottles">
+    </div>
+    <div class="price-section">
+      <div class="price-row">
+        <span class="price-dollar">$</span>
+        <span class="price-number">79</span>
+        <span class="price-per">PER<br>BOTTLE</span>
+      </div>
+    </div>
+    <div class="checklist-section">
+      <div class="check-item savings">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#c91212"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        YOU SAVE $200!
+      </div>
+      <div class="check-item">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="none" stroke="#c8c4bc" stroke-width="1.6"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#c8c4bc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        60 DAYS GUARANTEE
+      </div>
+    </div>
+    <div class="btn-section">
+      <a href="https://buy.stripe.com/bJe14nbgT9Vv3Hbdqp0Jq04" class="btn-buy gray-btn" onclick="trackPurchase(158.00, 2)">🛒 BUY NOW</a>
+    </div>
+    <div class="pay-section">
+      <img class="pay-img"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/neurodyne-assets/829df82867960d03c23109ccb54e4fe58f97ccc8/Screenshot%202026-02-23%20at%2009.24.30.png"
+        alt="Visa Mastercard Discover Amex">
+    </div>
+    <div class="total-section">
+      Total: <s>$358</s> <span class="bold-price">$158</span><br>
+      +$9.99 SHIPPING
+    </div>
+  </div>
+
+  <!-- ══════════ 6 BOTTLES HERO ══════════ -->
+  <div class="card hero">
+    <div class="card-label best"><em>⭐ BEST VALUE!</em></div>
+    <div class="hero-top">
+      <div class="bottles-count">6 Bottles</div>
+      <div class="supply-days">180 Days Supply</div>
+      <img class="product-img"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/ENDURION/ec5f0c680af131bfe372faf83e306a87ea5dbfb5/Endurion%206.png"
+        alt="Endurion 6 Bottles">
+    </div>
+    <div class="hero-price-section">
+      <div class="price-row">
+        <span class="price-dollar">$</span>
+        <span class="price-number">49</span>
+        <span class="price-per">PER<br>BOTTLE</span>
+      </div>
+    </div>
+    <div class="hero-checklist-section">
+      <div class="check-item savings">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#f5d155"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#1a0800" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        YOU SAVE $780!
+      </div>
+      <div class="check-item">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="rgba(255,255,255,.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        BIGGEST DISCOUNT
+      </div>
+      <div class="check-item">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="rgba(255,255,255,.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        90 DAYS GUARANTEE
+      </div>
+    </div>
+    <div class="hero-btn-section">
+      <a href="https://buy.stripe.com/fZu00jdp1gjT0uZ8650Jq02" class="btn-buy gold-btn" onclick="trackPurchase(294.00, 6)">🛒 BUY NOW</a>
+    </div>
+    <div class="hero-pay-section">
+      <img class="pay-img"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/neurodyne-assets/829df82867960d03c23109ccb54e4fe58f97ccc8/Screenshot%202026-02-23%20at%2009.24.30.png"
+        alt="Visa Mastercard Discover Amex">
+    </div>
+    <div class="hero-total-section">
+      Total: <s>$1074</s> <span class="bold-price">$294</span><br>
+      + <span class="free-ship">FREE SHIPPING</span>
+    </div>
+  </div>
+
+  <!-- ══════════ 3 BOTTLES ══════════ -->
+  <div class="card card-3b">
+    <div class="card-label side"><em>Most Popular</em></div>
+    <div class="card-top">
+      <div class="bottles-count">3 Bottles</div>
+      <div class="supply-days">90 Days Supply</div>
+      <img class="product-img img-md"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/ENDURION/ec5f0c680af131bfe372faf83e306a87ea5dbfb5/ENDURION%203.png"
+        alt="Endurion 3 Bottles">
+    </div>
+    <div class="price-section">
+      <div class="price-row">
+        <span class="price-dollar">$</span>
+        <span class="price-number">69</span>
+        <span class="price-per">PER<br>BOTTLE</span>
+      </div>
+    </div>
+    <div class="checklist-section">
+      <div class="check-item savings">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#c91212"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        YOU SAVE $330!
+      </div>
+      <div class="check-item">
+        <svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="none" stroke="#c8c4bc" stroke-width="1.6"/><path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#c8c4bc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        90 DAYS GUARANTEE
+      </div>
+    </div>
+    <div class="btn-section">
+      <a href="https://buy.stripe.com/aFa3cvbgT1oZdhLaed0Jq03" class="btn-buy gray-btn" onclick="trackPurchase(207.00, 3)">🛒 BUY NOW</a>
+    </div>
+    <div class="pay-section">
+      <img class="pay-img"
+        src="https://raw.githubusercontent.com/iagoaugustocrv21-cell/neurodyne-assets/829df82867960d03c23109ccb54e4fe58f97ccc8/Screenshot%202026-02-23%20at%2009.24.30.png"
+        alt="Visa Mastercard Discover Amex">
+    </div>
+    <div class="total-section">
+      Total: <s>$537</s> <span class="bold-price">$207</span><br>
+      + <span class="free-ship">FREE SHIPPING</span>
+    </div>
+  </div>
+
 </div>
 
-<!-- Tracker -->
-<script src="https://api.gohealthfix2.com/track.js"></script>
-
-<script>
-  // Hoplink base do PowerSteel
-  var BASE_HOPLINK = 'https://981d04ygb2vq2lch3hrh0gmdun.hop.clickbank.net/';
-
-  function buildLink() {
-    var ocid = (window.TR_OCID || localStorage.getItem('tr_ocid') || '').slice(0, 20);
-    var p = new URLSearchParams(location.search);
-    var extclid = p.get('fbclid') || p.get('ttclid') || p.get('gclid') || '';
-    var url = BASE_HOPLINK + '?affiliate=arkaff01';
-    if (ocid) url += '&tid=' + encodeURIComponent(ocid);
-    if (extclid) url += '&extclid=' + encodeURIComponent(extclid);
-    return url;
-  }
-
-  // Aguarda o track.js registrar o clique e definir TR_OCID
-  setTimeout(function() {
-    document.getElementById('yes-btn').href = buildLink();
-  }, 800);
-
-  // Atualiza o link também no clique (garante ocid mais recente)
-  document.getElementById('yes-btn').addEventListener('click', function(e) {
-    this.href = buildLink();
-  });
-</script>
+<div class="guarantee">
+  🔒 <span>Secure Checkout</span>
+  &nbsp;|&nbsp;
+  🛡️ <span>Money-Back Guarantee</span>
+  &nbsp;|&nbsp;
+  🇺🇸 <span>Made in USA</span>
+</div>
 
 </body>
 </html>
