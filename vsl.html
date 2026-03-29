@@ -386,8 +386,10 @@ src="https://www.facebook.com/tr?id=3988674464538065&ev=PageView&noscript=1"/></
     }
   });
 
-  // Mostra offer imediatamente (teste)
-  document.getElementById('offer').classList.add('visible');
+  // Mostra offer após 33min40s (duração do VSL)
+  setTimeout(function() {
+    document.getElementById('offer').classList.add('visible');
+  }, (33 * 60 + 40) * 1000);
 </script>
 
 </body>
