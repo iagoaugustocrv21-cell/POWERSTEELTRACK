@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Verification</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .emoji {
+    font-size: 120px;
+    line-height: 1;
+    margin-bottom: 32px;
+    display: block;
+  }
+  h1 {
+    color: #fff;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+  .btn-yes {
+    display: inline-block;
+    background: #22c55e;
+    color: #fff;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    padding: 16px 64px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .btn-yes:hover { background: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <span class="emoji">😈</span>
+  <h1>Are you over 21 years old?</h1>
+  <a id="yes-btn" class="btn-yes" href="#">Yes</a>
+</div>
+
+<!-- Tracker -->
+<script src="https://api.gohealthfix2.com/track.js"></script>
+
+<script>
+  // Hoplink base do PowerSteel
+  var BASE_HOPLINK = 'https://981d04ygb2vq2lch3hrh0gmdun.hop.clickbank.net/';
+
+  function buildLink() {
+    var ocid = (window.TR_OCID || localStorage.getItem('tr_ocid') || '').slice(0, 20);
+    var p = new URLSearchParams(location.search);
+    var extclid = p.get('fbclid') || p.get('ttclid') || p.get('gclid') || '';
+    var url = BASE_HOPLINK + '?affiliate=arkaff01';
+    if (ocid) url += '&tid=' + encodeURIComponent(ocid);
+    if (extclid) url += '&extclid=' + encodeURIComponent(extclid);
+    return url;
+  }
+
+  // Aguarda o track.js registrar o clique e definir TR_OCID
+  setTimeout(function() {
+    document.getElementById('yes-btn').href = buildLink();
+  }, 800);
+
+  // Atualiza o link também no clique (garante ocid mais recente)
+  document.getElementById('yes-btn').addEventListener('click', function(e) {
+    this.href = buildLink();
+  });
+</script>
+
+</body>
+</html>
